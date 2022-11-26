@@ -3,7 +3,9 @@ class Sea {
     this.ctx = undefined;
     this.bg = undefined;
     this.player = undefined;
-    this.obstacle = undefined;
+
+    this.frame = 0;
+    this.rockObstacle = [];
   }
 
   startGame() {
@@ -12,11 +14,8 @@ class Sea {
     this.ctx = canvas.getContext("2d");
 
     const fish = new Fish(80, 80, 250, 400);
-    const rock = new Rock(90, 90, 50, 20);
 
     this.player = fish;
-
-    this.obstacle = rock;
 
     const background = new Image();
     background.src = "./images/under-water-png-3-Transparent-Images-Free.png";
@@ -38,35 +37,47 @@ class Sea {
   }
 
   drawObstacle() {
-    setTimeout(() => {
+    this.rockObstacle.forEach((rock) => {
       this.ctx.drawImage(
-        this.obstacle.rock,
-        this.obstacle.posX - this.player.width / 2,
-        (this.obstacle.posY += 3),
-        this.obstacle.width,
-        this.obstacle.height
-      )
-      if (this.obstacle.posY === 0) {
-        this.drawObstacle();
-        console.log("does it work");
+        rock.rock,
+        rock.posX,
+        (rock.posY += 2),
+        rock.width,
+        rock.height
+      );
+      if (rock.posY > 501) {
+        this.rockObstacle.shift();
+        console.log(this.rockObstacle);
       }
-      console.log("rocky");;
-    }, 30);
-    // if (this.obstacle.posY === 1) {
-    //   this.drawObstacle();
-    //   console.log("does it work");
-    // }
+    });
+    // this.ctx.drawImage(
+    //   this.obstacle.rock,
+    //   this.obstacle.posX - this.player.width / 2,
+    //   (this.obstacle.posY += 3),
+    //   this.obstacle.width,
+    //   this.obstacle.height
+    // );
+
     // console.log("rocky");
   }
 
   updateCanvas() {
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.ctx.clearRect(0, 0, 500, 500);
       this.ctx.drawImage(this.bg, 0, 0, 500, 600);
       this.drawPlayer();
       this.drawObstacle();
+      this.frame += 5;
+      if (this.frame % 150 === 0) {
+        let rockX = Math.random() * 410;
+        const newRock = new Rock(90, 90, rockX, 20);
+
+        this.rockObstacle.push(newRock);
+      }
     }, 30);
   }
+
+  
 }
 
 class Fish {
@@ -143,5 +154,10 @@ window.onload = () => {
     document.addEventListener("keydown", (e) => {
       game.player.move(e.key);
     });
+  };
+  document.getElementById("restart").onclick = () => {
+    console.log("click click");
+    const game = new Sea();
+    game.startGame();
   };
 };

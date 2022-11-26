@@ -9,3 +9,11 @@ canvas {
   color: white;
   text-decoration: solid;
 }
+
+#restart {
+  width: 10em;
+  height: 5em;
+  background-color: red;
+  color: white;
+  text-decoration: solid;
+}
