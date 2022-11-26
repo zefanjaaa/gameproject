@@ -1,0 +1,11 @@
+canvas {
+  border: 1px solid black;
+}
+
+#button {
+  width: 10em;
+  height: 5em;
+  background-color: green;
+  color: white;
+  text-decoration: solid;
+}
