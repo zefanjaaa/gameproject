@@ -47,7 +47,7 @@ class Sea {
       );
       if (rock.posY > 501) {
         this.rockObstacle.shift();
-        console.log(this.rockObstacle);
+        // console.log(this.rockObstacle);
       }
     });
     // this.ctx.drawImage(
@@ -64,20 +64,20 @@ class Sea {
   updateCanvas() {
     this.interval = setInterval(() => {
       this.ctx.clearRect(0, 0, 500, 500);
-      this.ctx.drawImage(this.bg, 0, 0, 500, 600);
+      this.ctx.drawImage(this.bg, 0, 0, 500, 500);
       this.drawPlayer();
       this.drawObstacle();
       this.frame += 5;
       if (this.frame % 150 === 0) {
         let rockX = Math.random() * 410;
         const newRock = new Rock(90, 90, rockX, 20);
-
         this.rockObstacle.push(newRock);
       }
-    }, 30);
-  }
 
-  
+      let xBorder = Math.min(Math.max(this.player.posX, 0), 500);
+      // let yBorder = Math.min(Math.max(this.player.posY, 0), 500);
+    }, 25);
+  }
 }
 
 class Fish {
@@ -103,12 +103,12 @@ class Fish {
     this.posX -= 10;
   }
 
-  moveUp() {
-    this.posY -= 10;
-  }
-  moveDown() {
-    this.posY += 10;
-  }
+  // moveUp() {
+  //   this.posY -= 10;
+  // }
+  // moveDown() {
+  //   this.posY += 10;
+  // }
   move(movement) {
     switch (movement) {
       case "ArrowRight":
@@ -142,6 +142,7 @@ class Rock {
   createRock() {
     const rock = new Image();
     rock.src = "./images/1cartoonrock-transparent.png";
+    this.width = 65;
     return rock;
   }
 }
@@ -156,8 +157,7 @@ window.onload = () => {
     });
   };
   document.getElementById("restart").onclick = () => {
+    location.reload();
     console.log("click click");
-    const game = new Sea();
-    game.startGame();
   };
 };
