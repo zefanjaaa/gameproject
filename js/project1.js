@@ -3,7 +3,7 @@ class Sea {
     this.ctx = undefined;
     this.bg = undefined;
     this.player = undefined;
-
+    this.obstacle = undefined;
     this.frame = 0;
     this.rockObstacle = [];
   }
@@ -14,9 +14,9 @@ class Sea {
     this.ctx = canvas.getContext("2d");
 
     const fish = new Fish(80, 80, 250, 400);
-
+    const rock1 = new Rock();
     this.player = fish;
-
+    this.obstacle = rock1;
     const background = new Image();
     background.src = "./images/under-water-png-3-Transparent-Images-Free.png";
     background.onload = () => {
@@ -39,7 +39,7 @@ class Sea {
   drawObstacle() {
     this.rockObstacle.forEach((rock) => {
       this.ctx.drawImage(
-        rock.rock,
+        this.obstacle.rock,
         rock.posX,
         (rock.posY += 2),
         rock.width,
@@ -67,16 +67,37 @@ class Sea {
       this.ctx.drawImage(this.bg, 0, 0, 500, 500);
       this.drawPlayer();
       this.drawObstacle();
+      this.checkCollision();
       this.frame += 5;
       if (this.frame % 150 === 0) {
         let rockX = Math.random() * 410;
         const newRock = new Rock(90, 90, rockX, 20);
         this.rockObstacle.push(newRock);
       }
-
-      let xBorder = Math.min(Math.max(this.player.posX, 0), 500);
-      // let yBorder = Math.min(Math.max(this.player.posY, 0), 500);
     }, 25);
+  }
+
+  checkCollision() {
+    this.rockObstacle.forEach((obstacle) => {
+      if (
+        obstacle.posX < this.player.posX + this.player.width &&
+        obstacle.posX + obstacle.width > this.player.posX &&
+        obstacle.posY < this.player.posY + this.player.height &&
+        obstacle.posY + obstacle.height > this.player.posY
+      ) {
+        console.log("collision detected");
+        clearInterval(this.interval);
+        new Gameover();
+      } else {
+        console.log("no collision detected");
+      }
+    });
+  }
+}
+
+class Gameover {
+  constructor() {
+    alert("game over");
   }
 }
 
@@ -91,7 +112,7 @@ class Fish {
   createFish() {
     const fish = new Image();
 
-    fish.src = "./images/cartoonfish-transparent.png";
+    fish.src = "/images/FISHTRANSPARENTRESIZED.png";
     return fish;
   }
 
@@ -141,8 +162,9 @@ class Rock {
 
   createRock() {
     const rock = new Image();
-    rock.src = "./images/1cartoonrock-transparent.png";
+    rock.src = "/images/1cartoonrock-transparentRESIZED.png";
     this.width = 65;
+    this.height = 65;
     return rock;
   }
 }
