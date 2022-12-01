@@ -6,6 +6,7 @@ class Sea {
     this.obstacle = undefined;
     this.frame = 0;
     this.rockObstacle = [];
+    this.score = 0;
   }
 
   startGame() {
@@ -13,7 +14,7 @@ class Sea {
 
     this.ctx = canvas.getContext("2d");
 
-    const fish = new Fish(80, 80, 250, 400);
+    const fish = new Fish(50, 50, 250, 400);
     const rock1 = new Rock();
     this.player = fish;
     this.obstacle = rock1;
@@ -29,8 +30,8 @@ class Sea {
   drawPlayer() {
     this.ctx.drawImage(
       this.player.fish,
-      this.player.posX - this.player.width / 2,
-      this.player.posY,
+      this.player.posX - this.player.width / 6,
+      this.player.posY - this.player.width / 4,
       this.player.width,
       this.player.height
     );
@@ -68,6 +69,7 @@ class Sea {
       this.drawPlayer();
       this.drawObstacle();
       this.checkCollision();
+
       this.frame += 5;
       if (this.frame % 150 === 0) {
         let rockX = Math.random() * 410;
@@ -80,10 +82,10 @@ class Sea {
   checkCollision() {
     this.rockObstacle.forEach((obstacle) => {
       if (
-        obstacle.posX < this.player.posX + this.player.width &&
-        obstacle.posX + obstacle.width > this.player.posX &&
-        obstacle.posY < this.player.posY + this.player.height &&
-        obstacle.posY + obstacle.height > this.player.posY
+        obstacle.posX < this.player.posX + this.player.width - 10 &&
+        obstacle.posX + obstacle.width > this.player.posX + 20 &&
+        obstacle.posY < this.player.posY + this.player.height - 8 &&
+        obstacle.posY + obstacle.height > this.player.posY + 18
       ) {
         console.log("collision detected");
         clearInterval(this.interval);
@@ -102,16 +104,17 @@ class Gameover {
 }
 
 class Fish {
-  constructor(width, height, posX, posY) {
+  constructor(width, height, posX, posY, radius) {
     this.width = width;
     this.height = height;
     this.posX = posX;
     this.posY = posY;
+
     this.fish = this.createFish();
   }
   createFish() {
     const fish = new Image();
-
+    this.radius = 100;
     fish.src = "/images/FISHTRANSPARENTRESIZED.png";
     return fish;
   }
@@ -152,19 +155,21 @@ class Fish {
 }
 
 class Rock {
-  constructor(width, height, posX, posY) {
+  constructor(width, height, posX, posY, radius) {
     this.width = width;
     this.height = height;
     this.posX = posX;
     this.posY = posY;
+
     this.rock = this.createRock();
   }
 
   createRock() {
     const rock = new Image();
     rock.src = "/images/1cartoonrock-transparentRESIZED.png";
-    this.width = 65;
-    this.height = 65;
+    this.width = 60;
+    this.height = 60;
+
     return rock;
   }
 }
