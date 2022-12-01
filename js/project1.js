@@ -6,7 +6,7 @@ class Sea {
     this.obstacle = undefined;
     this.frame = 0;
     this.rockObstacle = [];
-    this.score = 0;
+    
   }
 
   startGame() {
