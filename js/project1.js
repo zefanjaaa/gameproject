@@ -6,7 +6,6 @@ class Sea {
     this.obstacle = undefined;
     this.frame = 0;
     this.rockObstacle = [];
-    
   }
 
   startGame() {
@@ -115,7 +114,7 @@ class Fish {
   createFish() {
     const fish = new Image();
     this.radius = 100;
-    fish.src = "/images/FISHTRANSPARENTRESIZED.png";
+    fish.src = "./images/FISHTRANSPARENTRESIZED.png";
     return fish;
   }
 
@@ -166,7 +165,7 @@ class Rock {
 
   createRock() {
     const rock = new Image();
-    rock.src = "/images/1cartoonrock-transparentRESIZED.png";
+    rock.src = "./images/1cartoonrock-transparentRESIZED.png";
     this.width = 60;
     this.height = 60;
 
